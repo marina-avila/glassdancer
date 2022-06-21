@@ -14,12 +14,14 @@ enum {
   STOP, LEFT, RIGHT
 };
 
-int timmings[4][3] = {{5, RIGHT, RIGHT}, {2, LEFT, STOP}, {3, LEFT, LEFT}, {4, RIGHT, RIGHT}};
+//int timmings[4][3] = {{1, RIGHT, STOP}, {2, LEFT, STOP}, {3, LEFT, LEFT}, {4, RIGHT, RIGHT}};
+
+int timmings[2][3] = {{2, RIGHT , RIGHT}, {3, LEFT , LEFT}};
 int LengthOfTimmings = sizeof timmings / sizeof timmings[0];
 
 void setup() {
   // Declare pins as output:
-  pinMode(dirPinOne, OUTPUT);
+  pinMode(dirPinOne, OUTPUT); 
   pinMode(dirPinTwo, OUTPUT);
   pinMode(stepPinOne, OUTPUT);
   pinMode(stepPinTwo, OUTPUT);
@@ -34,13 +36,13 @@ void loop() {
     int stopTwo = timmings[stepCount][2] == STOP ?  1 : 0;
 
     int dirOne = timmings[stepCount][1] == RIGHT ?  HIGH : LOW;
-    int dirTwo = timmings[stepCount][2] == RIGHT ?  HIGH : HIGH;
+    int dirTwo = timmings[stepCount][2] == RIGHT ?  LOW : HIGH;
     
     digitalWrite(dirPinOne, dirOne);
     digitalWrite(dirPinTwo, dirTwo);
 
     for (int i = 0; i < timmings[stepCount][0]; i++) {
-      for (int i = 0; i < stepsPerRevolution/2; i++) {
+      for (int i = 0; i < 2 * stepsPerRevolution; i++) {
         // These four lines result in 1 step:
         if(!stopOne) {
            digitalWrite(stepPinOne, dirOne);
@@ -48,14 +50,14 @@ void loop() {
         if(!stopTwo) {
           digitalWrite(stepPinTwo, dirTwo);
         }
-        delayMicroseconds(5000);
+        delayMicroseconds(2000);
         if(!stopOne) {
           digitalWrite(stepPinOne, !dirOne);
         }
         if(!stopTwo) {
           digitalWrite(stepPinTwo, !dirTwo);
         }
-        delayMicroseconds(5000);
+        delayMicroseconds(2000);
       } 
     }
     
